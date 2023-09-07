@@ -71,18 +71,18 @@ function App() {
       setid(response.data.customer_id);
       setuser(response.data);
     });
-    Axios.post("http://localhost:3001/getUserData", {
-      username: Fusername,
-      password: Fpassword,
-    }).then((response) => {
-      console.log("D");
-      console.log(response.data[0]);
-      setuser(response.data[0]);
-    });
-    Axios.post("http://localhost:3001/getRoomData", {}).then((response) => {
-      console.log(response);
-      setroom(response.data);
-    });
+    // Axios.post("http://localhost:3001/getUserData", {
+    //   username: Fusername,
+    //   password: Fpassword,
+    // }).then((response) => {
+    //   console.log("D");
+    //   console.log(response.data[0]);
+    //   setuser(response.data[0]);
+    // });
+    // Axios.post("http://localhost:3001/getRoomData", {}).then((response) => {
+    //   console.log(response);
+    //   setroom(response.data);
+    // });
   };
   useEffect(() => {
     if (Fusername === "") {
@@ -97,6 +97,8 @@ function App() {
   //******************************************************** */
   const login = (e) => {
     e.preventDefault();
+    console.log(usernamelog + " AAA")
+    
     if (usernamelog === "" || passwordlog === "") {
       alert("Please completely fill the Information ....");
       return;
@@ -110,17 +112,23 @@ function App() {
     }).then((response) => {
       //   console.log(response);
       if (response.data.message) {
-        setloginValid(response.data.message);
+        alert(response.data.message);
+        //setloginValid(response.data.message);
       } else {
         setFusername(usernamelog);
         setFpassword(passwordlog);
+        setusernamelog("");
+        setpasswordlog("");
         setid(parseInt(response.data[0].customer_id));
-        console.log("user value changed");
+        // console.log("user value changed");
         setuser(response.data[0]);
         navigate("home");
       }
       Axios.post("http://localhost:3001/getRoomData", {}).then((response) => {
+        console.log('A');
         console.log(response);
+        console.log('B');
+
         setroom(response.data);
       });
     });
@@ -143,6 +151,8 @@ function App() {
       } else {
         setFusername("Admin");
         setFpassword(passwordlog);
+        setusernamelog("");
+        setpasswordlog("");
         setid(parseInt(response.data[0].customer_id));
         console.log("user value changed");
         setuser(response.data[0]);
@@ -171,6 +181,7 @@ function App() {
         alert(response.data.message);
       } else {
         setFusername(usernamelog);
+        usernamelog = "";
         setid(parseInt(response.data[0].customer_id));
         setuser(response.data[0]);
         navigate("home");
@@ -240,6 +251,12 @@ function App() {
       setnewBooking(parseInt(newBooking ^ 1));
     });
   };
+
+const logOut = () =>{
+  setFpassword("");
+  setFusername("");
+}
+
   //********************************************************** */
   //********************************************************** */
 

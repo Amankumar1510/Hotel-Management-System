@@ -25,10 +25,10 @@ app.post("/register", (req, res) => {
   console.log(username, password, food);
 
   db.query(
-    "INSERT INTO userlogin (customer_name,pasword,contact,username,fav_food) VALUES (?,?,?,?,?);",
+    "INSERT INTO userlogin (customer_name,password,contact,username,fav_food) VALUES (?,?,?,?,?);",
     [name, password, phoneno, username, food],
     (err, result) => {
-      console.log(err);
+      if(err) console.log(err);
       res.send(result);
     }
   );
@@ -39,7 +39,7 @@ app.post("/login", (req, res) => {
   const password = req.body.passwordlog;
 
   db.query(
-    "SELECT * FROM userlogin WHERE username = ? AND pasword = ? ",
+    "SELECT * FROM userlogin WHERE username = ? AND password = ? ",
     [username, password],
     (err, result) => {
       if (err) {
@@ -47,10 +47,10 @@ app.post("/login", (req, res) => {
       }
       console.log(result);
       if (result.length) {
-        console.log("A");
+        // console.log("A");
         res.send(result);
       } else {
-        console.log("B");
+        // console.log("B");
         res.send({ message: "Wrong username / password" });
       }
     }
@@ -70,10 +70,10 @@ app.post("/loginFood", (req, res) => {
       }
       console.log(result);
       if (result.length) {
-        console.log("A");
+        // console.log("A");
         res.send(result);
       } else {
-        console.log("B");
+        // console.log("B");
         res.send({ message: "Wrong username / password" });
       }
     }
@@ -85,17 +85,18 @@ app.post("/getUserData", (req, res) => {
   const password = req.body.password;
 
   db.query(
-    "SELECT * FROM userlogin WHERE username = ? AND pasword = ? ",
+    "SELECT * FROM userlogin WHERE username = ? AND password = ? ",
     [username, password],
     (err, result) => {
-      console.log(err);
+      if(err) console.log(err);
       res.send(result);
     }
   );
 });
 app.post("/getRoomData", (req, res) => {
-  db.query("SELECT * FROM rooms ", [], (err, result) => {
-    console.log(err);
+  db.query("SELECT * FROM rooms",[], (err, result) => {
+    if(err) console.log(err);
+    console.log(result)
     res.send(result);
   });
 });
@@ -124,6 +125,7 @@ app.post("/validateRoom", (req, res) => {
 });
 
 app.post("/bookRoom", (req, res) => {
+  console.log('ABCD')
   const room_no = req.body.room_no;
   const customer_id = req.body.customer_id;
   const checkin = req.body.checkin;
@@ -135,7 +137,7 @@ app.post("/bookRoom", (req, res) => {
     [room_no, customer_id, booking_date, checkin, checkout],
     (err, result) => {
       console.log("book data added");
-      console.log(err);
+      if(err) console.log(err);
       res.send(result);
     }
   );
@@ -149,7 +151,7 @@ app.post("/getUserBookingData", (req, res) => {
     "SELECT * FROM booking WHERE customer_id=? ",
     [customer_id],
     (err, result) => {
-      console.log(err);
+      if(err) console.log(err);
       res.send(result);
     }
   );
@@ -163,7 +165,7 @@ app.post("/cancelBook", (req, res) => {
     "DELETE FROM booking WHERE booking_id=? ",
     [booking_id],
     (err, result) => {
-      console.log(err);
+      if(err) console.log(err);
       res.send(result);
     }
   );
@@ -177,10 +179,10 @@ app.post("/updateUserData", (req, res) => {
   const customer_id = req.body.customer_id;
   console.log(username);
   db.query(
-    "UPDATE userlogin SET customer_name=? ,pasword = ?,contact=?,username=? WHERE customer_id=?",
+    "UPDATE userlogin SET customer_name=? ,password = ?,contact=?,username=? WHERE customer_id=?",
     [customer_name, password, phoneno, username, customer_id],
     (err, result) => {
-      console.log(err);
+      if(err) console.log(err);
       res.send(result);
     }
   );
@@ -196,7 +198,7 @@ app.post("/updateRoomData", (req, res) => {
     "UPDATE rooms SET room_type=? ,room_price = ? WHERE room_no=?",
     [room_type, room_price, room_no],
     (err, result) => {
-      console.log(err);
+      if(err) console.log(err);
       res.send(result);
     }
   );
